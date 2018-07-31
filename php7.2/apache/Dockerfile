@@ -41,13 +41,13 @@ RUN { \
 
 RUN a2enmod rewrite expires
 
-# ioncube loader
-RUN curl -fsSL 'http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz' -o ioncube.tar.gz \
-    && mkdir -p ioncube \
-    && tar -xf ioncube.tar.gz -C ioncube --strip-components=1 \
-    && rm ioncube.tar.gz \
-    && mv ioncube/ioncube_loader_lin_7.2.so /var/www/ioncube_loader_lin_7.2.so \
-    && rm -r ioncube
+RUN set -ex; \
+	\
+	curl --connect-timeout 10 -o ioncube.tar.gz -fkSL "https://www.ioncube.com/php-7.2.0-beta-loaders/ioncube_loaders_lin_x86-64_BETA.tar.gz"; \
+	tar -zxvf ioncube.tar.gz; \
+	cp ioncube_loader_lin_7.2_10.1.0_beta.so /usr/local/lib/php/extensions/no-debug-non-zts-20170718/ioncube.so; \
+	rm -Rf ioncube*; \
+	echo "zend_extension=ioncube.so" > /usr/local/etc/php/conf.d/01-ioncube.ini;
 
 VOLUME /var/www/html
 
