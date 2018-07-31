@@ -41,6 +41,14 @@ RUN { \
 
 RUN a2enmod rewrite expires
 
+# ioncube loader
+RUN curl -fsSL 'http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz' -o ioncube.tar.gz \
+    && mkdir -p ioncube \
+    && tar -xf ioncube.tar.gz -C ioncube --strip-components=1 \
+    && rm ioncube.tar.gz \
+    && mv ioncube/ioncube_loader_lin_7.2.so /var/www/ioncube_loader_lin_7.2.so \
+    && rm -r ioncube
+
 VOLUME /var/www/html
 
 ENV WORDPRESS_VERSION 4.9.7
